@@ -9,7 +9,7 @@ list.files("./data/")
 # and point types for each statistic.
 runoff_day <- readRDS("data/runoff_day.rds")
 str(runoff_day)
-head(runoff_day)
+tail(runoff_day)
 
 runoff_day_stats <- runoff_day[, 
                                .(min_runoff = min(value), 
@@ -118,10 +118,10 @@ p2 <- ggplot(data = runoff_summary, aes(x = sname, y = value, fill = runoff_clas
        x = "Station", 
        y = "Runoff")
 
-ggsave("./results/figures/assignment4/stations_monthly_runoff.png", 
+ggsave("./results/figures/assignment4/stations_available_monthly_runoff.png", 
        plot = p2,
        width = 10, 
-       height = 6, 
+       height = 30, 
        dpi = 300)
 
 #task_4 
@@ -140,10 +140,10 @@ p3 <- ggplot(data = runoff_summary, aes(x = date, y = value, fill = runoff_class
        x = "Date", 
        y = "Runoff")
 
-ggsave("./results/figures/assignment3/stations_daily_runoff.png", 
+ggsave("./results/figures/assignment4/stations_daily_runoff.png", 
        plot = p3,
        width = 10, 
-       height = 6, 
+       height = 20, 
        dpi = 300)
 
 # All the outliers are above the boxes.
@@ -197,7 +197,7 @@ p4 <- ggplot(runoff_stations_summary,
     cex = guide_legend(order = 2)
   ) 
 
-ggsave("./results/figures/assignment3/stations_average_runoff.png", 
+ggsave("./results/figures/assignment4/stations_average_runoff.png", 
        plot = p4,
        width = 10, 
        height = 6, 
@@ -215,7 +215,7 @@ ggsave("./results/figures/assignment3/stations_average_runoff.png",
 #4 Which were the months, seasons, years with the highest/lowest runoff at each location? 
 # Try to present them in comprehensive way. Feel free to improvise!
 
-ggplot(data = runoff_summary, aes(x = month, y = value, fill = runoff_class)) +
+p5 <- ggplot(data = runoff_summary, aes(x = month, y = value, fill = runoff_class)) +
   geom_boxplot(outlier.size = 0.5) +
   facet_wrap(~sname, scales = 'free', ncol = 3) + 
   theme_bw() +
@@ -226,7 +226,11 @@ ggplot(data = runoff_summary, aes(x = month, y = value, fill = runoff_class)) +
   labs(title = "Monthly Runoff by Station", 
        x = "month", 
        y = "Runoff")
-# 
 
+ggsave("./results/figures/assignment4/station_monthly_runoff_classification.png", 
+       plot = p5,
+       width = 10, 
+       height = 30, 
+       dpi = 300)
 
 #5 (Optional) Which is the average distance between each station in km? Which are the two closest and farest adjacent stations?
