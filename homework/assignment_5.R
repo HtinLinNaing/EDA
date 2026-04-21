@@ -38,8 +38,11 @@ to_plot <- rbind(cbind(runoff_month_key, time = factor('annual')),
 p1 <- ggplot(to_plot, aes(time, value, fill = period)) +
   geom_boxplot() +
   facet_wrap(~sname, scales = 'free_y') +
-  xlab(label = "Time") +
-  ylab(label = "Runoff (m3/s)") +
+  labs(
+    title = "Station (DOMA, BASR, KOEL) Average Runoff",
+    x = "Time",
+    y = "Runoff (m3/s)"
+    ) +
   theme_bw()
 
 ggsave("./results/figures/assignment5/stations_average_runoff.png", 
@@ -102,7 +105,7 @@ p2 <- ggplot(runoff_year[year > 1950], aes(x = year, y = value_norm, col = sname
   labs(
     title = 'Stations Runoff : 1950 to today',
     x = "Year",
-    y = "Runoff"
+    y = "Runoff (m³/s)"
     ) +
   theme_bw()
 
@@ -117,7 +120,7 @@ p3 <- ggplot(runoff_year[year > 1950 & year <= 2010], aes(x = year, y = value_no
   labs(
     title = 'Stations Runoff : 1950 to 2010',
     x = "Year",
-    y = "Runoff"
+    y = "Runoff (m³/s)"
   ) +
   theme_bw()
 
@@ -132,7 +135,7 @@ p4 <- ggplot(runoff_year[year > 1950], aes(x = year, y = value_norm, col = sname
   labs(
     title = 'Staions Runoff : 1950 to today',
     x = "Year",
-    y = "Runoff"
+    y = "Runoff (m³/s)"
   ) +
   theme_bw()
 
@@ -147,7 +150,7 @@ p5 <- ggplot(runoff_year[year > 1950 & year <= 2010], aes(x = year, y = value_no
   labs(
     title = 'Stations Runoff : 1950 to 2010',
     x = "Year",
-    y = "Runoff"
+    y = "Runoff (m³/s)"
   ) +
   theme_bw()
 
@@ -171,7 +174,8 @@ ggsave("./results/figures/assignment5/stations_runoff_1950_2010_lm_method.png",
 # 2.In our analysis, we have used only river runoff. 
 # Precipitation is a factor strongly linked with runoff. 
 # Can you perform a similar analysis (boxplots and regression) for precipitation? 
-# Precipitation data averaged over the whole Rhine region can be found in the file precip_day.rds in folder data. What do you observe?
+# Precipitation data averaged over the whole Rhine region can be found in the file precip_day.rds in folder data. 
+# What do you observe?
 #   
 precip_day <- readRDS('./data/raw/precip_day.rds')
 
@@ -185,9 +189,12 @@ p_precip <- ggplot(precip_year[year > 1950 & year <= 2010], aes(x = year, y = va
   geom_line(col = "grey") +
   geom_smooth(method = 'loess', color = "blue", se = FALSE) + 
   geom_smooth(method = 'lm', color = "red", se = FALSE) +
-  labs(title = "Annual Precipitation Trend (Rhine Region)",
-       subtitle = "Blue = LOESS, Red = Linear Regression",
-       y = "Annual Precipitation", x = "Year") +
+  labs(
+    title = "Annual Precipitation Trend (Rhine Region)",
+    subtitle = "Blue = LOESS, Red = Linear Regression",
+    x = "Year",
+    y = "Annual Precipitation (mm)"
+    ) +
   theme_bw()
 
 ggsave("./results/figures/assignment5/precipitation_1950_2010_loess_lm__compared_method.png", 
@@ -201,4 +208,4 @@ ggsave("./results/figures/assignment5/precipitation_1950_2010_loess_lm__compared
 
 # 4.Which are some future analyses or other factors that should be examined? 
 # Present some arguments related to the findings so far.
-# 
+

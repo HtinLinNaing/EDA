@@ -37,8 +37,8 @@ p1 <- ggplot(data = runoff_stations_wide, aes(x = area, y = altitude, col = size
   scale_color_gradientn(colors = c("darkblue", "lightblue"), name = "size") +
   labs(
     title = "Runoff Stations: Area & Altitude",
-    x = "Area",
-    y = "Altitude"
+    x = "Area (km²)",
+    y = "Altitude (m ASL)"
   ) +
   theme_minimal()
 
@@ -66,8 +66,8 @@ p2 <- ggplot(data = runoff_stations_location_wide, aes(x = lon, y = lat, col = a
   scale_color_gradientn(colors = c("darkgreen", "darkred"), name = "Altitude") +
   labs(
     title = "Runoff Stations: Area & Altitude",
-    x = "Area",
-    y = "Altitude"
+    x = "Area (km²)",
+    y = "Altitude (m ASL)"
   ) +
   theme_minimal()
 
@@ -127,7 +127,7 @@ p4 <- ggplot(station_means, aes(x = sname, y = mean_runoff)) +
   labs(title = "Average Runoff per Station",
        subtitle = "Rhine River Basin",
        x = "Station",
-       y = "Mean Runoff") +
+       y = "Mean Runoff (m³/s)") +
   theme_minimal()
 
 ggsave("./results/figures/assignment3/stations_average_runoff.png", 

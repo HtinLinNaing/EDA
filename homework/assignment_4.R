@@ -32,7 +32,7 @@ p1 <- ggplot(data = runoff_day_stats_tidy, aes(x = sname, y = values, col = stat
   labs(
     title = "Runoff Stations: Mean, Median, Minimum & Maximum",
     x = "Stations",
-    y = "Runoff"
+    y = "Runoff (m³/s)"
   ) +
   theme_bw()
 
@@ -116,7 +116,7 @@ p2 <- ggplot(data = runoff_summary, aes(x = sname, y = value, fill = runoff_clas
   ) +
   labs(title = "Monthly Runoff by Station", 
        x = "Station", 
-       y = "Runoff")
+       y = "Runoff (m³/s)")
 
 ggsave("./results/figures/assignment4/stations_available_monthly_runoff.png", 
        plot = p2,
@@ -138,7 +138,7 @@ p3 <- ggplot(data = runoff_summary, aes(x = date, y = value, fill = runoff_class
   ) +
   labs(title = "Daily Runoff by Station", 
        x = "Date", 
-       y = "Runoff")
+       y = "Runoff (m³/s)")
 
 ggsave("./results/figures/assignment4/stations_daily_runoff.png", 
        plot = p3,
@@ -188,7 +188,7 @@ p4 <- ggplot(runoff_stations_summary,
   geom_point() +
   labs(
     title = "Runoff Stations: Area & Altitude",
-    x = "mean_day",
+    x = "Runoff mean per day (m³/s)",
     y = "area"
   ) +
   theme_bw() +
@@ -225,7 +225,7 @@ p5 <- ggplot(data = runoff_summary, aes(x = month, y = value, fill = runoff_clas
   ) +
   labs(title = "Monthly Runoff by Station", 
        x = "month", 
-       y = "Runoff")
+       y = "Runoff (m³/s)")
 
 ggsave("./results/figures/assignment4/station_monthly_runoff_classification.png", 
        plot = p5,
@@ -233,4 +233,38 @@ ggsave("./results/figures/assignment4/station_monthly_runoff_classification.png"
        height = 30, 
        dpi = 300)
 
-#5 (Optional) Which is the average distance between each station in km? Which are the two closest and farest adjacent stations?
+#5 (Optional) Which is the average distance between each station in km? 
+# Which are the two closest and farest adjacent stations?
+
+library(geosphere)
+
+runoff_stations <- runoff_stations[order(altitude)]
+
+runoff_stations[, `:=`(
+  lon_next = shift(lon, type = "lead"),
+  lat_next = shift(lat, type = "lead")
+)]
+
+# Calculate distance for each station
+station_distance <- runoff_stations[!is.na(lon_next), .(
+  segment = paste(station, "to", shift(station, type = "lead")),
+  dist_km = distHaversine(cbind(lon, lat), cbind(lon_next, lat_next)) / 1000
+)]
+
+average_distance <- station_distance[,mean(dist_km)]
+# the average distance between each station in km is 50.25964
+
+closest_station <- station_distance[which.min(dist_km), .(segment, dist_km)]
+# the two closest adjacent stations is RHEINFELDEN to BASEL 
+# and RHEINFELDEN to RHEINHALLE
+
+farest_station <- station_distance[which.max(dist_km), .(segment, dist_km)]
+# the two farest adjacent stations is MAXAU to RHEINFELDEN.
+
+
+
+
+
+
+
+
